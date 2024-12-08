@@ -1,4 +1,7 @@
-use std::ops::{Index, IndexMut};
+use std::{
+    fmt::Display,
+    ops::{Index, IndexMut},
+};
 
 use crate::point::Point;
 
@@ -28,6 +31,20 @@ impl<T: GridVal> Grid<T> {
             .iter()
             .position(|&v| v == val)
             .map(|i| self.as_point(i))
+    }
+
+    pub fn find_all(&self, val: T) -> Vec<Point> {
+        self.bytes
+            .iter()
+            .enumerate()
+            .filter_map(|(i, &v)| {
+                if v == val {
+                    Some(self.as_point(i))
+                } else {
+                    None
+                }
+            })
+            .collect()
     }
 }
 
@@ -61,5 +78,17 @@ impl<T: GridVal> IndexMut<Point> for Grid<T> {
     #[inline]
     fn index_mut(&mut self, index: Point) -> &mut Self::Output {
         &mut self.bytes[(index.y * self.width as i32 + index.x) as usize]
+    }
+}
+
+impl<T: GridVal + Display> Display for Grid<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        for y in 0..self.height {
+            for x in 0..self.width {
+                write!(f, "{}", self[Point::new(x as i32, y as i32)])?;
+            }
+            writeln!(f)?;
+        }
+        Ok(())
     }
 }

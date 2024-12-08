@@ -1,4 +1,7 @@
-use std::ops::{Add, AddAssign, Mul, Sub, SubAssign};
+use std::{
+    fmt::Display,
+    ops::{Add, AddAssign, Mul, Sub, SubAssign},
+};
 
 pub const UP: Point = Point::new(0, -1);
 pub const LEFT: Point = Point::new(-1, 0);
@@ -83,5 +86,11 @@ impl Mul<i32> for Point {
     #[must_use]
     fn mul(self, rhs: i32) -> Self {
         Point::new(self.x * rhs, self.y * rhs)
+    }
+}
+
+impl Display for Point {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
     }
 }
