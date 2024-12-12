@@ -28,20 +28,6 @@
           overlays = [fenix.overlays.default];
         };
 
-        cargo-aoc = pkgs.rustPlatform.buildRustPackage rec {
-          pname = "cargo-aoc";
-          version = "0.3.7";
-
-          src = pkgs.fetchFromGitHub {
-            owner = "gobanos";
-            repo = pname;
-            rev = version;
-            hash = "sha256-k9Lm91+Bk6EC8+KfEXhSs4ki385prZ6Vbs6W+18aZSI=";
-          };
-          cargoHash = "sha256-DKP9YMbVojK7w5pkX/gok4PG6WUjhqUdvTwSir05d0s=";
-          doCheck = false;
-        };
-
         toolchain = with fenix.packages.${system};
           combine [
             default.rustc
@@ -55,10 +41,8 @@
           rustc = toolchain;
         };
 
-        buildInputs = with pkgs; [openssl cargo-aoc];
-        shellPkgs = with pkgs; [
-          cargo-aoc
-        ];
+        buildInputs = with pkgs; [openssl];
+        shellPkgs = with pkgs; [];
       in rec {
         defaultPackage = naersk'.buildPackage {
           src = ./.;

@@ -19,7 +19,7 @@ pub const DIAG: [Point; 8] = [
     Point::new(-1, 1),
 ];
 
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash, PartialOrd, Ord)]
 pub struct Point {
     pub x: i32,
     pub y: i32,
@@ -42,6 +42,11 @@ impl Point {
     #[must_use]
     pub fn counter_clockwise(self) -> Self {
         Point::new(self.y, -self.x)
+    }
+
+    #[inline]
+    pub fn manhattan(self, other: Self) -> i32 {
+        (self.x - other.x).abs() + (self.y - other.y).abs()
     }
 }
 
