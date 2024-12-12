@@ -26,6 +26,16 @@ impl<T: GridVal> Grid<T> {
         Point::new((i % self.width) as i32, (i / self.width) as i32)
     }
 
+    #[inline]
+    pub fn copy_filled(&self, fill: T) -> Grid<T> {
+        let bytes = vec![fill; self.width * self.height];
+        Grid {
+            width: self.width,
+            height: self.height,
+            bytes,
+        }
+    }
+
     pub fn find(&self, val: T) -> Option<Point> {
         self.bytes
             .iter()
