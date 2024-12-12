@@ -8,16 +8,13 @@ pub const LEFT: Point = Point::new(-1, 0);
 pub const DOWN: Point = Point::new(0, 1);
 pub const RIGHT: Point = Point::new(1, 0);
 pub const ORTHO: [Point; 4] = [UP, LEFT, DOWN, RIGHT];
-pub const DIAG: [Point; 8] = [
-    UP,
+pub const DIAG: [Point; 4] = [
     Point::new(1, -1),
-    LEFT,
     Point::new(-1, -1),
-    DOWN,
     Point::new(1, 1),
-    RIGHT,
     Point::new(-1, 1),
 ];
+pub const ORTHODIAG: [Point; 8] = [UP, DIAG[0], LEFT, DIAG[1], DOWN, DIAG[2], RIGHT, DIAG[3]];
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash, PartialOrd, Ord)]
 pub struct Point {
