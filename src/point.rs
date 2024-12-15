@@ -18,14 +18,14 @@ pub const ORTHODIAG: [Point; 8] = [UP, DIAG[0], LEFT, DIAG[1], DOWN, DIAG[2], RI
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash, PartialOrd, Ord)]
 pub struct Point {
-    pub x: i32,
-    pub y: i32,
+    pub x: i64,
+    pub y: i64,
 }
 
 impl Point {
     #[inline]
     #[must_use]
-    pub const fn new(x: i32, y: i32) -> Point {
+    pub const fn new(x: i64, y: i64) -> Point {
         Point { x, y }
     }
 
@@ -42,7 +42,7 @@ impl Point {
     }
 
     #[inline]
-    pub fn manhattan(self, other: Self) -> i32 {
+    pub fn manhattan(self, other: Self) -> i64 {
         (self.x - other.x).abs() + (self.y - other.y).abs()
     }
 }
@@ -81,12 +81,12 @@ impl SubAssign for Point {
     }
 }
 
-impl Mul<i32> for Point {
+impl Mul<i64> for Point {
     type Output = Self;
 
     #[inline]
     #[must_use]
-    fn mul(self, rhs: i32) -> Self {
+    fn mul(self, rhs: i64) -> Self {
         Point::new(self.x * rhs, self.y * rhs)
     }
 }

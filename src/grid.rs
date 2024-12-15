@@ -8,7 +8,7 @@ use crate::point::Point;
 pub trait GridVal: Copy + PartialEq {}
 impl<T> GridVal for T where T: Copy + PartialEq {}
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Grid<T: GridVal> {
     pub width: usize,
     pub height: usize,
@@ -18,12 +18,12 @@ pub struct Grid<T: GridVal> {
 impl<T: GridVal> Grid<T> {
     #[inline]
     pub fn contains(&self, p: Point) -> bool {
-        p.x >= 0 && p.y >= 0 && p.x < self.width as i32 && p.y < self.height as i32
+        p.x >= 0 && p.y >= 0 && p.x < self.width as i64 && p.y < self.height as i64
     }
 
     #[inline]
     pub fn as_point(&self, i: usize) -> Point {
-        Point::new((i % self.width) as i32, (i / self.width) as i32)
+        Point::new((i % self.width) as i64, (i / self.width) as i64)
     }
 
     #[inline]
@@ -80,14 +80,25 @@ impl<T: GridVal> Index<Point> for Grid<T> {
 
     #[inline]
     fn index(&self, p: Point) -> &Self::Output {
-        &self.bytes[(p.y * self.width as i32 + p.x) as usize]
+        &self.bytes[(p.y * self.width as i64 + p.x) as usize]
     }
 }
 
 impl<T: GridVal> IndexMut<Point> for Grid<T> {
     #[inline]
     fn index_mut(&mut self, index: Point) -> &mut Self::Output {
-        &mut self.bytes[(index.y * self.width as i32 + index.x) as usize]
+        &mut self.bytes[(index.y * self.width as i64 + index.x) as usize]
+    }
+}
+
+impl<T: GridVal + Into<char>> Grid<T> {
+    pub fn display_as_char(&self) {
+        for y in 0..self.height {
+            for x in 0..self.width {
+                print!("{}", self[Point::new(x as i64, y as i64)].into());
+            }
+            println!();
+        }
     }
 }
 
@@ -95,7 +106,7 @@ impl<T: GridVal + Display> Display for Grid<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for y in 0..self.height {
             for x in 0..self.width {
-                write!(f, "{}", self[Point::new(x as i32, y as i32)])?;
+                write!(f, "{}", self[Point::new(x as i64, y as i64)])?;
             }
             writeln!(f)?;
         }
