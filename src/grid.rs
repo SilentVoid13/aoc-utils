@@ -22,6 +22,11 @@ impl<T: GridVal> Grid<T> {
     }
 
     #[inline]
+    pub fn as_idx(&self, p: Point) -> usize {
+        (p.y * self.width as i64 + p.x) as usize
+    }
+
+    #[inline]
     pub fn as_point(&self, i: usize) -> Point {
         Point::new((i % self.width) as i64, (i / self.width) as i64)
     }
